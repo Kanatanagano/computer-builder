@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Virtual Computer Builder</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Virtual Computer Builder</h1>
+    <div id="computerConfig">
+        <h2>Computer Configuration</h2>
+        <label for="cpuBrand">CPU Brand:</label>
+        <input type="text" id="cpuBrand" placeholder="Enter CPU Brand">
+
+        <label for="cpuCores">CPU Cores:</label>
+        <input type="number" id="cpuCores" placeholder="Enter CPU Cores">
+
+        <label for="cpuClockSpeed">CPU Clock Speed (GHz):</label>
+        <input type="number" id="cpuClockSpeed" step="0.1" placeholder="Enter CPU Clock Speed">
+
+        <label for="gpuBrand">GPU Brand:</label>
+        <input type="text" id="gpuBrand" placeholder="Enter GPU Brand">
+
+        <label for="gpuMemory">GPU Memory (GB):</label>
+        <input type="number" id="gpuMemory" placeholder="Enter GPU Memory">
+
+        <label for="gpuClockSpeed">GPU Clock Speed (MHz):</label>
+        <input type="number" id="gpuClockSpeed" placeholder="Enter GPU Clock Speed">
+
+        <label for="memoryCapacity">Memory Capacity (GB):</label>
+        <input type="number" id="memoryCapacity" placeholder="Enter Memory Capacity">
+
+        <label for="memorySpeed">Memory Speed (MHz):</label>
+        <input type="number" id="memorySpeed" placeholder="Enter Memory Speed">
+
+        <label for="storageType">Storage Type:</label>
+        <select id="storageType">
+            <option value="HDD">HDD</option>
+            <option value="SSD">SSD</option>
+        </select>
+
+        <label for="storageCapacity">Storage Capacity (GB):</label>
+        <input type="number" id="storageCapacity" placeholder="Enter Storage Capacity">
+
+        <label for="storageSpeed">Storage Speed (MB/s):</label>
+        <input type="number" id="storageSpeed" placeholder="Enter Storage Speed">
+    </div>
+
+    <button id="calculateButton">Calculate Performance</button>
+
+    <h2>Computer Performance:</h2>
+    <p id="performanceResult">Click the button to calculate performance.</p>
+
+    <script src="script.js"></script>
+</body>
+</html>
