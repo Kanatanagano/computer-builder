@@ -1,52 +1,5 @@
-body {
-  font-family: Arial, sans-serif;
+body{
   margin: 0;
-  padding: 0;
-  background-color: #f0f0f0;
-}
-
-h1 {
-  text-align: center;
-}
-
-#computerConfig {
-  background-color: #fff;
-  border: 1px solid #ccc;
-  padding: 20px;
-  margin: 20px auto;
-  max-width: 400px;
-}
-
-label {
-  display: block;
-  margin-bottom: 5px;
-}
-
-input, select {
-  width: 100%;
-  padding: 5px;
-  margin-bottom: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-#calculateButton {
-  display: block;
-  margin: 10px auto;
-  padding: 10px 20px;
-  background-color: #0074d9;
-  color: #fff;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-}
-
-#calculateButton:hover {
-  background-color: #0056a5;
-}
-
-#performanceResult {
-  text-align: center;
-  font-weight: bold;
-  margin-top: 10px;
+  font-family: Futura!important;
+  letter-spacing: 0.03em!important;
 }
