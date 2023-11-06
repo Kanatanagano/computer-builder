@@ -220,6 +220,40 @@ class View{
         });
         return parent;
     }
+
+    static createResultPage(count,pc){
+        let result = document.getElementById(config.result);
+        let container = document.createElement("div");
+        let gamingScore = PC.getGamingScore(pc);
+        let workingScore = PC.getWorkingScore(pc);
+  
+        container.innerHTML = 
+        `
+            <div class="d-flex flex-column bg-primary text-white p-3">
+                <h4 class="p-3">Your PC ${count}</h4>
+                <h4>CPU</h4>
+                <p>Brand: ${pc.cpuBrand}</p>
+                <p>Model: ${pc.cpuModel}</p>
+                <h4>GPU</h4>
+                <p>Brand: ${pc.gpuBrand}</p>
+                <p>Model: ${pc.gpuModel}</p>
+                <h4>RAM</h4>
+                <p>Brand: ${pc.ramBrand}</p>
+                <p>Model: ${pc.ramModel}</p>
+                <h4>Storage</h4>
+                <p>Disk: ${pc.storageType.toUpperCase()}</p>
+                <p>Disk: ${pc.storageSize}</p>
+                <p>Brand: ${pc.storageBrand}</p>
+                <p>Model: ${pc.storageModel}</p>
+            </div>
+  
+            <div class="d-flex flex-row justify-content-center bg-success">
+                <h4 class="p-2">Gaming: ${gamingScore}%</h4>
+                <h4 class="p-2">Work: ${workingScore}%</h4>
+            </div>
+        `
+        parent.append(container);
+    }
 }
 
 class Controller {
