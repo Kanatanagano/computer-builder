@@ -288,6 +288,8 @@ class Controller {
 
 }
 
+Controller.startBuildcomputer();
+
 
 
 
