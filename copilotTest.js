@@ -1,46 +1,46 @@
 const config = {
-    url : "https://api.recursionist.io/builder/computers?type=",
-    parent : document.getElementById("target"),
-    
-    cpuBrand : "cpuBrand",
-    cpuModel : "cpuModel",
-
-    gpuBrand : "gpuBrand",
-    gpuModel : "gpuModel",
-
-    ramBrand : "ramBrand",
-    ramModel : "ramModel",
-    ramNumber : "ramNumber",
-
-    storageBrand : "storageBrand",
-    storageModel : "storageModel",
-    storageSize : "storageSize",
-    storageType : "storageType",
+    parent: document.getElementById("target"),
+    url: "https://api.recursionist.io/builder/computers?type=",
+    cpu:{
+        brand: "#cpuBrand",
+        model: "#cpuModel"
+    },
+    gpu:{
+        brand: "#gpuBrand",
+        model: "#gpuModel"
+    },
+    ram:{
+        num: "#ramNum",
+        brand: "#ramBrand",
+        model: "#ramModel"
+    },
+    storage:{
+        type: "#storageType",
+        size: "#storageSize",
+        brand: "#storageBrand",
+        model: "#storageModel"
+    }
 }
 
-class PC {
-    constructor() {
+class PC{
+    constructor(){
         this.cpuBrand = null;
         this.cpuModel = null;
         this.cpuBenchmark = null;
-
         this.gpuBrand = null;
         this.gpuModel = null;
         this.gpuBenchmark = null;
-
         this.ramBrand = null;
         this.ramModel = null;
-        this.ramNumber = null;
         this.ramBenchmark = null;
-
+        this.storageType = null;
+        this.storageSize = null;
         this.storageBrand = null;
         this.storageModel = null;
-        this.storageSize = null;
-        this.storageType = null;
         this.storageBenchmark = null;
     }
 
-    static addBrandData(parts, selectedBrand, pc) {
+    static addBrandData(parts, selectedBrand, pc){ //->String, String, Object
         switch(parts){
             case "cpu":
                 pc.cpuBrand = selectedBrand;
@@ -60,8 +60,8 @@ class PC {
         }
     }
 
-    static addModelData(aparts, selectedModel, pc) {
-        switch(aparts){
+    static addModelData(parts, selectedModel, pc){ //->String, String, Object
+        switch(parts){
             case "cpu":
                 pc.cpuModel = selectedModel;
                 break;
@@ -76,44 +76,43 @@ class PC {
                 break;
             case "ssd":
                 pc.storageModel = selectedModel;
-                break;
+                break;    
         }
     }
 
-    static addBenchmarkData(aparts, Benchmark, pc) {
-        switch(aparts){
+    static addBenchmarkData(parts, benchmark, pc){ //->String, Int, Object
+        switch(parts){
             case "cpu":
-                pc.cpuBenchmark = Benchmark;
+                pc.cpuBenchmark = benchmark;
                 break;
             case "gpu":
-                pc.gpuBenchmark = Benchmark;
+                pc.gpuBenchmark = benchmark;
                 break;
             case "ram":
-                pc.ramBenchmark = Benchmark;
+                pc.ramBenchmark = benchmark;
                 break;
             case "hdd":
-                pc.storageBenchmark = Benchmark;
+                pc.storageBenchmark = benchmark;
                 break;
             case "ssd":
-                pc.storageBenchmark = Benchmark;
-                break;
+                pc.storageBenchmark = benchmark;
+                break;    
         }
     }
 
-    static addStorageData(size, pc){
+    static addStorageSizeData(size, pc){ //->String, Object
         pc.storageSize = size;
     }
 
-    static getGamingBenchmark(pc){
+    static getGamingBenchmark(pc){ //->Object
         let cpuScore = parseInt(pc.cpuBenchmark * 0.25);
         let gpuScore = parseInt(pc.gpuBenchmark * 0.6);
         let ramScore = parseInt(pc.ramBenchmark * 0.125);
-        let storageScore = this.storageType === "SSD" ? parseInt(pc.storageBenchmark * 0.1) : parseInt(pc.storageBenchmark * 0.025);
-
+        let storageScore = this.storageType = "SSD" ? parseInt(pc.storageBenchmark * 0.1) : parseInt(pc.storageBenchmark * 0.025);
         return cpuScore + gpuScore + ramScore + storageScore;
     }
 
-    static getWorkBenchmark(pc){
+    static getWorkBenchmark(pc){ //->Object
         let cpuScore = parseInt(pc.cpuBenchmark * 0.6);
         let gpuScore = parseInt(pc.gpuBenchmark * 0.25);
         let ramScore = parseInt(pc.ramBenchmark * 0.1);
@@ -122,9 +121,9 @@ class PC {
     }
 }
 
-class View{
-    static createFirstPage(pc) {
-        const parent = config.parent;
+class View{    
+    static createInitialPage(pc){ //->Object
+        const parent = config.parent
         let container = document.createElement("div");
         container.classList.add("bg-white");
         container.innerHTML = 
@@ -208,22 +207,22 @@ class View{
             <div id="displayPC">
             </div>
         
-        `;
-
+        `
         parent.append(container);
-        const addPc = document.querySelectorAll("#addPc")[0];
-        addPc.addEventListener("click", function() {
+
+        const addPcBtn = document.querySelectorAll("#addPc")[0];
+        addPcBtn.addEventListener("click", function(){
             Controller.clickAddPc(pc);
         });
 
         return parent;
     }
 
-    static createResultPage(pc, gamingScore, workScore, count) {
-        const container = document.querySelectorAll("#displayPC");
+    static createbuiltPcPage(pc, gamingScore, workScore, count){ //->Object, int, int, int
+        const container = document.querySelectorAll("#displayPC")[0];
         let div = document.createElement("div");
-        div.classList.add("bg-primary", "text-white", "m-2", "col-12");
-        div.innerHTML = 
+        div.classList.add("bg-primary","text-white", "m-2", "col-12");
+        div.innerHTML =
         `
         <div class="m-2 pt-3 d-flex justify-content-center">
             <h1>Your PC${count}</h1>
@@ -260,108 +259,96 @@ class View{
     }
 }
 
-class Controller {
+
+class Controller{
     static count = 0;
 
-    static startBuildcomputer() {
+    static startBuildComputer(){
         const pc = new PC();
-        View.createFirstPage(pc);
-        Controller.getAllData(pc);
+        View.createInitialPage(pc); 
+        Controller.getAllData(pc); 
     }
 
-    static getAllData(pc) {
-        let cpuBrand = document.getElementById(config.cpuBrand);
-        let cpuModel = document.getElementById(config.cpuModel);
-        let gpuBrand = document.getElementById(config.gpuBrand);
-        let gpuModel = document.getElementById(config.gpuModel);
-        let ramBrand = document.getElementById(config.ramBrand);
-        let ramModel = document.getElementById(config.ramModel);
-        let storageBrand = document.getElementById(config.storageBrand);
-        let storageModel = document.getElementById(config.storageModel);
+    static getAllData(pc){ //->Object
+        const cpuBrandOp = document.querySelectorAll(config.cpu.brand)[0];
+        const cpuModelOp = document.querySelectorAll(config.cpu.model)[0];
+        const gpuBrandOp = document.querySelectorAll(config.gpu.brand)[0];
+        const gpuModelOp = document.querySelectorAll(config.gpu.model)[0];
+        const ramBrandOp = document.querySelectorAll(config.ram.brand)[0];
+        const ramModelOp = document.querySelectorAll(config.ram.model)[0];
+        const storageBrandOp = document.querySelectorAll(config.storage.brand)[0];
+        const storageModelOp = document.querySelectorAll(config.storage.model)[0];
+        
+        //CPU Data: getBrandData -> getModelData
+        //GPU Data: getBrandData -> getModelData
+        //RAM Data: getRamData(get ram number) -> getBrandData -> getModelData
+        //Storage Data: getStorageData(get type and size) -> getBrandData -> getModelData
 
-
-        Controller.getBrandData("cpu", cpuBrand, cpuModel, pc);
-        Controller.getBrandData("gpu", gpuBrand, gpuModel, pc);
-        Controller.getRamData(ramBrand, ramModel, pc);
-        Controller.getStorageData(storageBrand, storageModel, pc);
+        Controller.getBrandData("cpu", cpuBrandOp,cpuModelOp, pc);
+        Controller.getBrandData("gpu", gpuBrandOp,gpuModelOp, pc);
+        Controller.getRamData(ramBrandOp, ramModelOp, pc); 
+        Controller.getStorageData(storageBrandOp, storageModelOp, pc); 
     }
 
-    static getBrandData(parts, brandOp, modelOp, pc) {
-        fetch(config.url + parts).then(response => response.json()).then(function(data) {
+    static getBrandData(parts, brandOp, modelOp, pc){ //->String, NodeList, NodeList, Object
+        fetch(config.url + parts).then(response=>response.json()).then(function(data){
             brandOp.innerHTML = `<option>-</option>`;
             let brandData = Controller.getBrand(data);
-            for (let brand in brandData) {
+            let modelData = Controller.getModel(data);
+            let benchmarkData = Controller.getBenchmark(data);
+            for(let brand in brandData){
                 let option = document.createElement("option");
                 option.value = brandData[brand];
                 option.innerText = brandData[brand];
                 brandOp.append(option);
             }
-            brandOp.addEventListener("change", function() {
-                let selectedBrand = brandOp.value;
-                PC.addBrandData(parts, selectedBrand, pc);
-                Controller.getModelData(parts, brandOp, modelOp, pc);
-              
+            brandOp.addEventListener("change", function(){
+                Controller.getModelData(parts, brandOp, modelOp, modelData, benchmarkData, pc);
             });
         })
     }
 
-    static getModelData(parts,brandSelect,modelSelect,pc) {
-        fetch(config.url + parts).then(response => response.json()).then(function(data) {
-            let modelData = Controller.getModel(data);
-            if(parts === "ram"){
-                modelSelect.innerHTML = `<option value="">-</option>`
-                for(let i in modelData[brandSelect.value]){
-                    if(modeldata[brandSelect.value][i].indexOf(ramNumber.value) !== -1){
-                      let option = document.createElement("option");
-                      option.value = modelData[brandSelect.value][i];
-                      option.innerText = modelData[brandSelect.value][i];
-                      modelSelect.append(option);
-                    }
-                }
+    static getModelData(parts, brandOp, modelOp, modelData, benchmarkData, pc){ //->String, NodeList, NodeList,Array, Array, Object
+        fetch(config.url + parts).then(response=>response.json()).then(function(data){
+            modelOp.innerHTML = `<option>-</option>`;
+            let selectedBrand = brandOp.value;
+            PC.addBrandData(parts, selectedBrand, pc);
+
+            if(parts == "hdd" || parts == "ssd"){
+                const storageSizeOp = document.querySelectorAll(config.storage.size)[0];
+                let selectedSize = storageSizeOp.value;
+                let filteredStorageModel = Controller.filterStorageModel(selectedSize, modelData[selectedBrand]);
+                Controller.addOptionList(filteredStorageModel, modelOp);
+            }else if(parts == "ram"){
+                const ramNumOp = document.querySelectorAll(config.ram.num)[0];
+                let selectedNumber = ramNumOp.value;
+                let filteredRamModel = Controller.filterRamModel(selectedNumber, modelData[selectedBrand]);
+                Controller.addOptionList(filteredRamModel, modelOp);
+            } else{
+                Controller.addOptionList(modelData[selectedBrand], modelOp)
             }
-            else if(parts === "cpu" || parts === "gpu"){
-                modelSelect.innerHTML = `<option value="">-</option>`
-                for(let i in modelData[brandSelect.value]){
-                    let option = document.createElement("option");
-                    option.value = modelData[brandSelect.value][i];
-                    option.innerText = modelData[brandSelect.value][i];
-                    modelSelect.append(option);
-                }
-            }
-            else if(parts === "hdd" || parts === "ssd"){
-                modelSelect.innerHTML = `<option value="">-</option>`;
-                for(let i in modelData[brandSelect.value]){
-                  if(modelData[brandSelect.value][i].indexOf(storageSize.value) !== -1){
-                    let option = document.createElement("option");
-                    option.value = modelData[brandSelect.value][i];
-                    option.innerText = modelData[brandSelect.value][i];
-                    modelSelect.append(option);
-                  }
-                }
-              }
             
-            modelSelect.addEventListener("change", function() {
-                let selectedModel = modelSelect.value;
+            modelOp.addEventListener("change", function(){
+                let selectedModel = modelOp.value;
+                let selectedBenchmark = benchmarkData[selectedModel];
                 PC.addModelData(parts, selectedModel, pc);
-                PC.addBenchmarkData(parts, selectedModel, pc);
-            })
-        }); 
+                PC.addBenchmarkData(parts, selectedBenchmark, pc);
+            });
+
+        })
     }
-    
 
-
-
-    static getRamData(ramBrandOp, ramModelOp, pc) {
-        const ramNumOp = document.querySelectorAll(config.ramNumber);
-        ramNumOp.addEventListener("change", () => {
+    static getRamData(ramBrandOp, ramModelOp, pc){ //->NodeList, NodeList, Object
+        const ramNumOp = document.querySelectorAll(config.ram.num)[0];
+        ramNumOp.addEventListener("change", function(){
             ramBrandOp.innerHTML = `<option>-</option>`;
             Controller.getBrandData("ram", ramBrandOp, ramModelOp, pc);
         });
     }
 
-    static getStorageData(storageBrandOp, storageModelOp, pc) {
-        const storageTypeOp = document.querySelectorAll(config.storageType);
-        const storageSizeOp = document.querySelectorAll(config.storageSize);
+    static getStorageData(storageBrandOp, storageModelOp, pc){ //->NodeList, NodeList, Object
+        const storageTypeOp = document.querySelectorAll(config.storage.type)[0];
+        const storageSizeOp = document.querySelectorAll(config.storage.size)[0];
         storageTypeOp.addEventListener("change", function(){
             storageSizeOp.innerHTML = `<option>-</option>`;
             let selectedStorageType = storageTypeOp.value;
@@ -374,12 +361,12 @@ class Controller {
                     PC.addStorageSizeData(selectedSize, pc);
                     Controller.getBrandData("hdd", storageBrandOp, storageModelOp, pc);            
                 })
-            } else {
+            } else{
                 Controller.getStorageSizeData("ssd");
                 storageSizeOp.addEventListener("change", function(){
                     storageModelOp.innerHTML = `<option>-</option>`;
                     let selectedSize = storageSizeOp.value;
-                    PC.addStorageData(selectedSize, pc);
+                    PC.addStorageSizeData(selectedSize, pc);
                     Controller.getBrandData("ssd", storageBrandOp, storageModelOp, pc);
                 })
             }
@@ -387,7 +374,7 @@ class Controller {
     }
 
 
-    static addOptionList(arr, op) {
+    static addOptionList(arr, op){
         arr.forEach(word => {
             let option = document.createElement("option");
             option.value = word;
@@ -396,16 +383,16 @@ class Controller {
         });
     }
 
-    static getStorageSizeData(type) {
-        fetch(config.url + type).then(res=>res.json()).then(function(data){
-            const storageSizeOp = document.querySelectorAll(config.storageSize);
+    static getStorageSizeData(type){ //->String
+        fetch(config.url + type).then(response=>response.json()).then(function(data){
+            const storageSizeOp = document.querySelectorAll(config.storage.size)[0];
             let storagemodelData = Controller.getStorageModel(data);
             let storageSizeList = Controller.getStorageSizeList(storagemodelData);
             Controller.addOptionList(storageSizeList, storageSizeOp);
         });
     }
 
-    static getStorageSizeList(storageModelData) { 
+    static getStorageSizeList(storageModelData){ //->Object
         let storageModelList = Object.keys(storageModelData); 
         let tbSizeList = [];
         let gbSizeList = [];
@@ -420,7 +407,7 @@ class Controller {
         return sortedTb.concat(sortedGb);
     }
 
-    static getBrand(data) {
+    static getBrand(data){ //->Array
         let brandData = {};
         for(let i in data){
             let currentData = data[i];
@@ -429,7 +416,7 @@ class Controller {
         return brandData;
     }
 
-    static getModel(data) { 
+    static getModel(data){ //->Array
         let modelData = {};
         for(let i in data){
             let currentData = data[i];
@@ -439,7 +426,7 @@ class Controller {
         return modelData;
     }
 
-    static getBenchmark(data){
+    static getBenchmark(data){ //->Array
         let benchmarkData = {};
         for(let i in data){
             let currentData = data[i];
@@ -448,7 +435,7 @@ class Controller {
         return benchmarkData;
     }
 
-    static getStorageModel(data){ 
+    static getStorageModel(data){ //->Array
         let modelData = {};
         for(let i in data){
             let currentData = Controller.getStorageSizeString(data[i].Model);
@@ -457,22 +444,22 @@ class Controller {
         return modelData;
     }
 
-    static getStorageSizeString(storageModel){
+    static getStorageSizeString(storageModel){ //->String
         let storageSize = storageModel.split(' ').filter(word => word.includes("GB") || word.includes("TB")).join('');
         return storageSize;
     }
 
-    static filterStorageModel(size, storageModelData){
+    static filterStorageModel(size, storageModelData){ //->String, Array
         let storageModelList = Object.values(storageModelData);
         return storageModelList.filter(word => word.includes(' ' + size));
     }
 
-    static filterRamModel(number, ramModelData){
+    static filterRamModel(number, ramModelData){ //->String, Array
         let ramModelList = Object.values(ramModelData);
         return ramModelList.filter(word => word.includes(number + 'x'));
     }
 
-    static clickAddPc(pc){
+    static clickAddPc(pc){ //->Object
         let modelList = [pc.cpuModel, pc.gpuModel, pc.ramModel, pc.storageModel];
         let gamingScore = PC.getGamingBenchmark(pc);
         let workScore = PC.getWorkBenchmark(pc);
@@ -480,14 +467,10 @@ class Controller {
             if(modelList[i] == null) return alert("Please fill in all forms.")
         }
         Controller.count++;
-        return View.createResultPage(pc, gamingScore, workScore, Controller.count);
+        return View.createbuiltPcPage(pc, gamingScore, workScore, Controller.count);
     }
-
-
 }
-Controller.startBuildcomputer();
-
-
+Controller.startBuildComputer();
 
 
 
