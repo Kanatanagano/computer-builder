@@ -3,8 +3,3 @@ body{
   font-family: Futura!important;
   letter-spacing: 0.03em!important;
 }
-
-div{
-  box-sizing: border-box;
-  color:  rgb(9, 9, 9);
-}
