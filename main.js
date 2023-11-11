@@ -20,6 +20,7 @@ const config = {
 
 class PC {
     constructor() {
+        //初期化処理
         this.cpuBrand = null;
         this.cpuModel = null;
         this.cpuBenchmark = null;
@@ -100,7 +101,7 @@ class PC {
         }
     }
 
-    static addStorageData(size, pc){
+    static addStorageSize(size, pc){
         pc.storageSize = size;
     }
 
@@ -163,7 +164,7 @@ class View{
             </div>
             <div class="p-2 d-flex justify-content-start flex-column d-sm-flex flex-sm-row justify-content-sm-start align-items-sm-center">
                 <h5>How many?</h5>
-                <select class="mx-3 col-9 col-sm-1 custom-select" id="ramNum">
+                <select class="mx-3 col-9 col-sm-1 custom-select" id="ramNumber">
                     <option>-</option>
                     <option>1</option>
                     <option>2</option>
@@ -220,7 +221,7 @@ class View{
     }
 
     static createResultPage(pc, gamingScore, workScore, count) {
-        const container = document.querySelectorAll("#displayPC");
+        const container = document.querySelectorAll("#displayPC")[0];
         let div = document.createElement("div");
         div.classList.add("bg-primary", "text-white", "m-2", "col-12");
         div.innerHTML = 
@@ -276,13 +277,14 @@ class Controller {
         let gpuModel = document.getElementById(config.gpuModel);
         let ramBrand = document.getElementById(config.ramBrand);
         let ramModel = document.getElementById(config.ramModel);
+        let ramNumber = document.getElementById(config.ramNumber);
         let storageBrand = document.getElementById(config.storageBrand);
         let storageModel = document.getElementById(config.storageModel);
 
 
         Controller.getBrandData("cpu", cpuBrand, cpuModel, pc);
         Controller.getBrandData("gpu", gpuBrand, gpuModel, pc);
-        Controller.getRamData(ramBrand, ramModel, pc);
+        Controller.getRamData(ramNumber, ramBrand, ramModel, pc);
         Controller.getStorageData(storageBrand, storageModel, pc);
     }
 
@@ -311,7 +313,7 @@ class Controller {
             if(parts === "ram"){
                 modelSelect.innerHTML = `<option value="">-</option>`
                 for(let i in modelData[brandSelect.value]){
-                    if(modeldata[brandSelect.value][i].indexOf(ramNumber.value) !== -1){
+                    if(modelData[brandSelect.value][i].indexOf(ramNumber.value) !== -1){
                       let option = document.createElement("option");
                       option.value = modelData[brandSelect.value][i];
                       option.innerText = modelData[brandSelect.value][i];
@@ -351,18 +353,17 @@ class Controller {
 
 
 
-    static getRamData(ramBrandOp, ramModelOp, pc) {
-        const ramNumOp = document.querySelectorAll(config.ramNumber);
-        ramNumOp.addEventListener("change", () => {
-            ramBrandOp.innerHTML = `<option>-</option>`;
+    static getRamData(ramNumberOp, ramBrandOp, ramModelOp, pc) {
+        ramNumberOp.addEventListener("change", function(){
             Controller.getBrandData("ram", ramBrandOp, ramModelOp, pc);
         });
     }
 
     static getStorageData(storageBrandOp, storageModelOp, pc) {
-        const storageTypeOp = document.querySelectorAll(config.storageType);
-        const storageSizeOp = document.querySelectorAll(config.storageSize);
-        storageTypeOp.addEventListener("change", function(){
+        const storageTypeOp = document.getElementById(config.storageType);
+        const storageSizeOp = document.getElementById(config.storageSize);
+        storageTypeOp.addEventListener("change", function() 
+        {
             storageSizeOp.innerHTML = `<option>-</option>`;
             let selectedStorageType = storageTypeOp.value;
             pc.storageType = selectedStorageType;
@@ -371,7 +372,7 @@ class Controller {
                 storageSizeOp.addEventListener("change", function(){
                     storageBrandOp.innerHTML = `<option>-</option>`;
                     let selectedSize = storageSizeOp.value;
-                    PC.addStorageSizeData(selectedSize, pc);
+                    pc.storageSize = selectedSize;
                     Controller.getBrandData("hdd", storageBrandOp, storageModelOp, pc);            
                 })
             } else {
@@ -379,7 +380,7 @@ class Controller {
                 storageSizeOp.addEventListener("change", function(){
                     storageModelOp.innerHTML = `<option>-</option>`;
                     let selectedSize = storageSizeOp.value;
-                    PC.addStorageData(selectedSize, pc);
+                    pc.storageSize = selectedSize;
                     Controller.getBrandData("ssd", storageBrandOp, storageModelOp, pc);
                 })
             }
@@ -397,8 +398,8 @@ class Controller {
     }
 
     static getStorageSizeData(type) {
-        fetch(config.url + type).then(res=>res.json()).then(function(data){
-            const storageSizeOp = document.querySelectorAll(config.storageSize);
+        fetch(config.url + type).then(response=>response.json()).then(function(data) {
+            const storageSizeOp = document.getElementById(config.storageSize);
             let storagemodelData = Controller.getStorageModel(data);
             let storageSizeList = Controller.getStorageSizeList(storagemodelData);
             Controller.addOptionList(storageSizeList, storageSizeOp);
@@ -434,7 +435,9 @@ class Controller {
         for(let i in data){
             let currentData = data[i];
             if(modelData[currentData.Brand] == undefined) modelData[currentData.Brand] = [currentData.Model];
-            else modelData[currentData.Brand].push(currentData.Model);
+            else {
+                modelData[currentData.Brand].push(currentData.Model);
+            }
         }
         return modelData;
     }
@@ -462,22 +465,12 @@ class Controller {
         return storageSize;
     }
 
-    static filterStorageModel(size, storageModelData){
-        let storageModelList = Object.values(storageModelData);
-        return storageModelList.filter(word => word.includes(' ' + size));
-    }
-
-    static filterRamModel(number, ramModelData){
-        let ramModelList = Object.values(ramModelData);
-        return ramModelList.filter(word => word.includes(number + 'x'));
-    }
-
     static clickAddPc(pc){
         let modelList = [pc.cpuModel, pc.gpuModel, pc.ramModel, pc.storageModel];
         let gamingScore = PC.getGamingBenchmark(pc);
         let workScore = PC.getWorkBenchmark(pc);
         for(let i = 0; i < modelList.length; i++){
-            if(modelList[i] == null) return alert("Please fill in all forms.")
+            if(modelList[i] == null) return alert("フォーム内の要項をすべて埋めてください.")
         }
         Controller.count++;
         return View.createResultPage(pc, gamingScore, workScore, Controller.count);
@@ -486,8 +479,5 @@ class Controller {
 
 }
 Controller.startBuildcomputer();
-
-
-
 
 
