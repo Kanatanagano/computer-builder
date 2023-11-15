@@ -426,7 +426,7 @@ class Controller{
         return modelData;
     }
 
-    static getBenchmark(data){ //->Array
+    static getBenchmarkData(data){ //->Array
         let benchmarkData = {};
         for(let i in data){
             let currentData = data[i];

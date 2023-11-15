@@ -1,3 +1,7 @@
+
+
+
+
 const config = {
   url:"https://api.recursionist.io/builder/computers?type=",
 
@@ -210,7 +214,7 @@ class View{
       </div>
       `;
       target.append(container);
-      let addPc = document.getElementById(config.addPc);
+      let addPc = document.getElementById(container.addPc);
       addPc.addEventListener("click", function(){
           Controller.clickAddPC(pc);
       });
@@ -254,7 +258,7 @@ class Controller{
   static count = 0;
 
   static startBuilding(){
-      const pc = new PC;
+      const pc = new PC();
       View.createStartPage(pc);
       Controller.getAllData(pc);
   }
@@ -288,7 +292,7 @@ class Controller{
           brandSelect.addEventListener("change",function(){
               PC.addBrand(parts,brandSelect.value,pc);
               Controller.getModelData(parts,brandSelect,modelSelect,pc)
-          })
+          });
       })
   }
 
