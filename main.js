@@ -81,7 +81,7 @@ class PC {
         }
     }
 
-    static addBenchmarkData(aparts, Benchmark, pc) {
+    static addBenchmark(aparts, Benchmark, pc) {
         switch(aparts){
             case "cpu":
                 pc.cpuBenchmark = Benchmark;
@@ -230,6 +230,8 @@ class View{
         let div = document.createElement("div");
         let gamingScore = PC.getGamingBenchmark(pc);
         let workingScore = PC.getWorkBenchmark(pc);
+        console.log(gamingScore);
+        console.log(workingScore);
 
         div.classList.add("bg-primary", "text-white", "m-2", "col-12");
         div.innerHTML = 
@@ -266,6 +268,8 @@ class View{
         `
         container.append(div);
         return container;
+
+        
     }
 }
 
@@ -495,5 +499,6 @@ class Controller {
 
 }
 Controller.startBuildcomputer();
+
 
 
