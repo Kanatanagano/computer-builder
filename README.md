@@ -1,5 +1,3 @@
-
-https://github.com/Kanatanagano/computer-builder/assets/112442087/02f7b1e6-d88b-43b3-ab5e-758c950436f5
 # computer-builder
 
 ## 概要
