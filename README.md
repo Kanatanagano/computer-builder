@@ -1,3 +1,5 @@
+
+https://github.com/Kanatanagano/computer-builder/assets/112442087/02f7b1e6-d88b-43b3-ab5e-758c950436f5
 # computer-builder
 
 ## 概要
@@ -10,7 +12,9 @@ https://kanatanagano.github.io/computer-builder/
 
 
 ## デモ
-![-GoogleChrome2024-01-1804-32-57-ezgif com-video-to-gif-converter](https://github.com/Kanatanagano/computer-builder/assets/112442087/7d2d75dc-54b1-47f3-b2e1-0d5180e249e6)
+https://github.com/Kanatanagano/computer-builder/assets/112442087/59c349c5-243f-4806-ba0d-d47772ec3b25
+
+
 
 ## 説明
 コンピュータは以下の部品から成り立っています。
