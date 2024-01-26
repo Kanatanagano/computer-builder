@@ -12,7 +12,7 @@ https://kanatanagano.github.io/computer-builder/
 
 
 ## デモ
-https://github.com/Kanatanagano/computer-builder/assets/112442087/59c349c5-243f-4806-ba0d-d47772ec3b25
+![-GoogleChrome2024-01-1804-32-57-ezgif com-video-to-gif-converter (1)](https://github.com/Kanatanagano/computer-builder/assets/112442087/8afbb1b0-62c4-49a1-8b23-1254ed7f97e2)
 
 
 
